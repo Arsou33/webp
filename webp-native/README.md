@@ -31,3 +31,11 @@ tar -xvf openjdk-22-jextract+5-33_macos-x64_bin.tar.gz
 
 ```
 
+For Windows
+
+Install: Visual Studio Community
+git clone https://chromium.googlesource.com/webm/libwebp
+nmake /f Makefile.vc CFG=release-dynamic RTLIBCFG=static OBJDIR=output
+copy dll from output\release-dynamic\x86\bin to natives/windows_64
+
+
