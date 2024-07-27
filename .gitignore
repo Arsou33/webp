@@ -1,0 +1,6 @@
+/webp-native/libwebp-*
+/webp-native/jextract-22/
+/webp-native/openjdk-22-jextract*
+
+target/
+/.idea/
