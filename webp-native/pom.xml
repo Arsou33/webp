@@ -7,11 +7,11 @@
     <parent>
         <groupId>org.peekmoon.webp</groupId>
         <artifactId>webp-parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>webp-native</artifactId>
-    <version>1.4.0-0</version>
+    <version>1.4.0-1</version>
 
     <name>Webp native</name>
 

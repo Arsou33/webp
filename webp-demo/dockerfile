@@ -1,0 +1,13 @@
+FROM eclipse-temurin:22.0.2_9-jre-alpine
+
+RUN apk --no-cache add curl
+
+WORKDIR /opt/webp-demo
+
+# We make four distinct layers so if there are application changes the library layers can be re-used
+RUN curl https://www.gstatic.com/webp/gallery3/1_webp_a.webp --output /tmp/rose.webp
+COPY target/lib/ /opt/webp-demo/lib
+COPY target/webp-demo-*.jar /opt/webp-demo/webp-demo.jar
+
+ENV LD_LIBRARY_PATH=/tmp/webp.lib
+CMD [ "java", "-Dlibrary.extract.dir=/tmp/webp.lib", "-jar", "/opt/webp-demo/webp-demo.jar", "/tmp/rose.webp", "/tmp/rose.raw"]

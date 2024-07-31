@@ -5,7 +5,7 @@ For macos
 
 ```shell script
 
-export LIBWEBP_VERSION=1.4.0
+LIBWEBP_VERSION=1.4.0
 
 # For MacOs
 # All command must be executed in the root directory of the webp-native project
@@ -31,11 +31,31 @@ tar -xvf openjdk-22-jextract+5-33_macos-x64_bin.tar.gz
 
 ```
 
-For Windows
+## For Windows
 
 Install: Visual Studio Community
 git clone https://chromium.googlesource.com/webm/libwebp
 nmake /f Makefile.vc CFG=release-dynamic RTLIBCFG=static OBJDIR=output
 copy dll from output\release-dynamic\x86\bin to natives/windows_64
 
+## For unix like
+
+```
+-docker build . -t libwebp-build:1.4.0
+docker run --name libwebp-build libwebp-build:1.4.0 /bin/true
+docker cp libwebp-build:/tmp/libwebp-1.4.0/src/.libs/libwebp.so.7.1.9 src/main/resources/natives/linux_64/libwebp.so
+docker cp libwebp-build:/tmp/libwebp-1.4.0/sharpyuv/.libs/libsharpyuv.so.0.1.0 src/main/resources/META-INF/lib/linux-x86_64/libsharpyuv.so.0
+```
+ 
+# Notes
+
+libsharpyuv is not used in the project, but it is required by libwebp. It has to be extracted in a specific directory referenced by the LD_LIBRARY_PATH environment variable.
+
+Trying to build linux binaries extracting object file from archive
+
+```
+ar -x ../libwebp-$LIBWEBP_VERSION-$LIBWEBP_OS/lib/libwebp.a
+...
+```
+lead to error message "need to recompile with -fPIC"
 

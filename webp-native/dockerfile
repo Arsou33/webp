@@ -1,0 +1,13 @@
+# Allow to build native linux
+
+FROM ubuntu:24.10
+
+RUN apt-get update && \
+    apt-get -y install curl build-essential gcc libjpeg-dev libpng-dev libtiff-dev libgif-dev
+
+RUN curl https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-1.4.0.tar.gz --output /tmp/libwebp-1.4.0.tar.gz && \
+    tar -xvf /tmp/libwebp-1.4.0.tar.gz -C /tmp && \
+    cd /tmp/libwebp-1.4.0 && \
+    ./configure --disable-sse2 && \
+    make
+
