@@ -41,7 +41,7 @@ copy dll from output\release-dynamic\x86\bin to natives/windows_64
 ## For unix like
 
 ```
--docker build . -t libwebp-build:1.4.0
+docker build . -t libwebp-build:1.4.0
 docker run --name libwebp-build libwebp-build:1.4.0 /bin/true
 docker cp libwebp-build:/tmp/libwebp-1.4.0/src/.libs/libwebp.so.7.1.9 src/main/resources/natives/linux_64/libwebp.so
 docker cp libwebp-build:/tmp/libwebp-1.4.0/sharpyuv/.libs/libsharpyuv.so.0.1.0 src/main/resources/META-INF/lib/linux-x86_64/libsharpyuv.so.0
@@ -50,6 +50,7 @@ docker cp libwebp-build:/tmp/libwebp-1.4.0/sharpyuv/.libs/libsharpyuv.so.0.1.0 s
 # Notes
 
 libsharpyuv is not used in the project, but it is required by libwebp. It has to be extracted in a specific directory referenced by the LD_LIBRARY_PATH environment variable.
+sse2 is disabled in linux build otherwise decode can generate a core dump.
 
 Trying to build linux binaries extracting object file from archive
 
@@ -59,3 +60,4 @@ ar -x ../libwebp-$LIBWEBP_VERSION-$LIBWEBP_OS/lib/libwebp.a
 ```
 lead to error message "need to recompile with -fPIC"
 
+Libwebp is copyrighted by Google and his licensed is copied in the LICENSE.libwep file.
