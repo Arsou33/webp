@@ -11,6 +11,9 @@
 
     <artifactId>webp-demo</artifactId>
 
+    <name>Webp demo project</name>
+
+
     <dependencies>
         <dependency>
             <groupId>org.peekmoon.webp</groupId>
@@ -28,6 +31,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.2</version>
                 <configuration>
                     <archive>
                         <manifest>
