@@ -33,10 +33,12 @@ tar -xvf openjdk-22-jextract+5-33_macos-x64_bin.tar.gz
 
 ## For Windows
 
-Install: Visual Studio Community
+```shell script
+# Install: Visual Studio Community 
 git clone https://chromium.googlesource.com/webm/libwebp
 nmake /f Makefile.vc CFG=release-dynamic RTLIBCFG=static OBJDIR=output
-copy dll from output\release-dynamic\x86\bin to natives/windows_64
+# copy dll from output\release-dynamic\x86\bin to natives/windows_64
+```
 
 ## For unix like
 
@@ -49,11 +51,10 @@ docker cp libwebp-build:/tmp/libwebp-1.4.0/sharpyuv/.libs/libsharpyuv.so.0.1.0 s
  
 # Notes
 
-libsharpyuv is not used in the project, but it is required by libwebp. It has to be extracted in a specific directory referenced by the LD_LIBRARY_PATH environment variable.
-sse2 is disabled in linux build otherwise decode can generate a core dump.
+- libsharpyuv is not used in the project, but it is required by libwebp. It has to be extracted in a specific directory referenced by the LD_LIBRARY_PATH environment variable.
+- sse2 is disabled in linux build otherwise decode can generate a core dump.
 
-Trying to build linux binaries extracting object file from archive
-
+Trying to build linux binaries extracting object file from archive with command
 ```
 ar -x ../libwebp-$LIBWEBP_VERSION-$LIBWEBP_OS/lib/libwebp.a
 ...

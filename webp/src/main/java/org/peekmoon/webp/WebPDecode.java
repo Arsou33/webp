@@ -1,6 +1,7 @@
 package org.peekmoon.webp;
 
 import org.peekmoon.webp.binding.LibWebPDecode;
+import org.peekmoon.webp.binding.WebPBitstreamFeatures;
 import org.peekmoon.webp.library.InitBinding;
 
 import java.lang.foreign.Arena;
@@ -49,6 +50,40 @@ public class WebPDecode {
 
     }
 
+    public Features getFeatures(byte[] data) {
+
+        try (Arena arena = Arena.ofConfined()) {
+            var webpBuffer = arena.allocateFrom(LibWebPDecode.C_CHAR, data);
+            // Use internal version as non-internal is static and not exposed by the binding
+            // Non-internal only calls internal version with WEBP_DECODER_ABI_VERSION as last argument
+            var features = WebPBitstreamFeatures.allocate(arena);
+            var result = LibWebPDecode.WebPGetFeaturesInternal(webpBuffer, webpBuffer.byteSize(), features, LibWebPDecode.WEBP_DECODER_ABI_VERSION());
+            if (result != LibWebPDecode.VP8_STATUS_OK()) {
+                throw new WebPDecodeException(result);
+            }
+            int lossModeInt = WebPBitstreamFeatures.format(features);
+            var lossMode = switch (lossModeInt) {
+                case 0 -> Features.LossMode.MIXED;
+                case 1 -> Features.LossMode.LOSSY;
+                case 2 -> Features.LossMode.LOSSLESS;
+                default -> throw new IllegalStateException("Unexpected value: " + lossModeInt);
+            };
+
+            return new Features(
+                    WebPBitstreamFeatures.width(features),
+                    WebPBitstreamFeatures.height(features),
+                    WebPBitstreamFeatures.has_alpha(features) != 0,
+                    WebPBitstreamFeatures.has_animation(features) != 0,
+                    lossMode);
+        }
+    }
+
+    /**
+     * Decode a WebP image
+     *
+     * @param data buffer containing the WebP image
+     * @return the decoded image
+     */
     public DecodedImage decode(byte[] data) {
 
         try (Arena arena = Arena.ofConfined()) {
